@@ -7,7 +7,7 @@ from PyPDF2 import PdfReader
 from docx import Document
 from openai import OpenAI
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", ""))
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 def extract_text_from_pdf(file):
