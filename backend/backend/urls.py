@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from documents.views import process_document
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/process/', process_document, name='process_document'),
 ]
