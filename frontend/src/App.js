@@ -26,10 +26,13 @@ function App() {
     formData.append('file', file);
 
     try {
+      console.log('Uploading file:', file.name);
       const response = await fetch('http://localhost:8000/api/process/', {
         method: 'POST',
         body: formData,
       });
+
+      console.log('Response status:', response.status);
 
       const data = await response.json();
 
