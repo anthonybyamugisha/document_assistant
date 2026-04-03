@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
 
 SECRET_KEY = 'django-insecure-dev-key-change-in-production'
 

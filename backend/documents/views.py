@@ -5,9 +5,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from PyPDF2 import PdfReader
 from docx import Document
-from openai import OpenAI
+import google.generativeai as genai
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+genai.configure(api_key=settings.GEMINI_API_KEY)
 
 
 def extract_text_from_pdf(file):
@@ -64,15 +64,11 @@ def process_document(request):
     key_sections = extract_key_sections(text)
     
     try:
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a document assistant. Summarize the following document concisely."},
-                {"role": "user", "content": f"Summarize this document:\n\n{text[:4000]}"}
-            ],
-            max_tokens=500
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(
+            f"Summarize this document concisely:\n\n{text[:4000]}"
         )
-        summary = response.choices[0].message.content
+        summary = response.text
     except Exception as e:
         summary = f"LLM processing unavailable: {str(e)}"
     
