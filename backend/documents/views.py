@@ -64,9 +64,16 @@ def process_document(request):
     try:
         genai.configure(api_key=settings.GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-1.5-flash')
-        response = model.generate_content(
-            f"Summarize this document concisely:\n\n{text[:4000]}"
-        )
+        
+        style = request.data.get('style', 'concise')
+        if style == 'detailed':
+            prompt = f"Provide a detailed summary of this document:\n\n{text[:4000]}"
+        elif style == 'bullets':
+            prompt = f"Provide a bullet point summary of this document (use - for each point):\n\n{text[:4000]}"
+        else:
+            prompt = f"Summarize this document concisely:\n\n{text[:4000]}"
+        
+        response = model.generate_content(prompt)
         summary = response.text
     except Exception as e:
         summary = f"LLM processing unavailable: {str(e)}"
