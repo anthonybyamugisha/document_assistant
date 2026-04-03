@@ -7,8 +7,6 @@ from PyPDF2 import PdfReader
 from docx import Document
 import google.generativeai as genai
 
-genai.configure(api_key=settings.GEMINI_API_KEY)
-
 
 def extract_text_from_pdf(file):
     reader = PdfReader(file)
@@ -64,6 +62,7 @@ def process_document(request):
     key_sections = extract_key_sections(text)
     
     try:
+        genai.configure(api_key=settings.GEMINI_API_KEY)
         model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(
             f"Summarize this document concisely:\n\n{text[:4000]}"
